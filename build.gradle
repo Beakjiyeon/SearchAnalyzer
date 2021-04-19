@@ -1,0 +1,47 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.10.BUILD-SNAPSHOT'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id "io.freefair.lombok" version "5.3.0"
+}
+
+group = 'kr.co.tbase'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+	runtimeOnly group: 'com.h2database', name: 'h2'
+	testRuntimeOnly group: 'com.h2database', name: 'h2'
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+
+	runtime group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+	implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+	implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+	implementation group: 'org.slf4j', name : 'log4j-over-slf4j', version : '1.7.26'
+	implementation "org.apache.logging.log4j:log4j-to-slf4j:2.10.0"
+}
+
+test {
+	useJUnitPlatform()
+}
