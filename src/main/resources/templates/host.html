@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+host
+
+<form th:action="@{/search/host}" method="post">
+    <input type="text" name="keyword" placeholder="검색할 단어를 입력해주세요.">
+    <button type="submit">검색</button>
+</form>
+
+<div>
+    <span th:each="pageNum : ${pageList}" th:inline="text">
+        <a th:href="@{'/host/?page=' + ${pageNum}}">[[${pageNum}]]</a>
+    </span>
+</div>
+
+<table>
+    <tr>
+        <td>NO.</td>
+        <td>검색어</td>
+        <td>호스트명</td>
+        <td>누적 검색수</td>
+    </tr>
+    <tr th:each="dto, i : ${data}">
+        <td th:text="${start + i.index}"></td>
+        <td th:text="${dto.name}"></td>
+        <td th:text="${dto.domain}"></td>
+        <td th:text="${dto.count}"></td>
+    </tr>
+
+</table>
+</body>
+</html>

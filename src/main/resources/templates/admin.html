@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+admin page
+
+<form th:action="@{/admin/search/member}" method="post">
+    <input type="text" name="userName" placeholder="검색할 이름을 입력해주세요.">
+    <button type="submit">검색</button>
+</form>
+
+<div>
+    <span th:each="pageNum : ${pageList}" th:inline="text">
+        <a th:href="@{'/admin/users/?page=' + ${pageNum}}">[[${pageNum}]]</a>
+    </span>
+</div>
+
+<table>
+    <tr>
+        <td>NO.</td>
+        <td>ID</td>
+        <td>이름</td>
+        <td>기능</td>
+    </tr>
+    <tr th:each="dto, i : ${data}">
+        <td th:text="${start + i.index}"></td>
+        <td th:text="${dto.userId}"></td>
+        <td th:text="${dto.userName}"></td>
+        <td>
+            <a type="button" th:href="@{'/admin/user/?user-id=' + ${dto.userId}}">삭제</a></td>
+    </tr>
+
+</table>
+</body>
+
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+<scipt>
+
+</scipt>
+</html>

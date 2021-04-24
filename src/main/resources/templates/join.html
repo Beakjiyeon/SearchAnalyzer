@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script src="/static/script/jquery-3.6.0.min.js"></script>
+    <meta charset="UTF-8">
+    <title>회원가입 페이지</title>
+    <script>
+        const engMatch = /^[a-zA-Z]{1,10}$/;
+        const pwdMatch = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+
+        function noDuple(str) {
+            let strArray = [];
+            for (let i = 0; i < str.length; i++) {
+                strArray.push(str.charAt(i));
+            }
+            const strSetArray = Array.from(new Set(strArray));
+            console.log(strArray);
+            console.log(strSetArray);
+            return strArray === strSetArray;
+        }
+
+        function checkInfo(type) {
+            switch (type) {
+                case "userId":
+                    const userId = document.getElementById("userId").value;
+                    if (engMatch.test(userId)) {
+                        $("#userId").css("background", "blue");
+                    } else {
+                        $("#userId").css("background", "red");
+                    }
+                    break;
+                case "pwd":
+                    const pwd = document.getElementById("pwd").value;
+                    const pwdDupleMatch = pwd.replace(/(.)\1+/g, '$1');
+                    console.log(pwd)
+                    console.log(pwdDupleMatch)
+                    if (pwdMatch.test(pwd) && noDuple(pwd)) {
+                        console.log(pwdMatch.test(pwd));
+                        console.log(noDuple(pwd))
+                        $("#pwd").css("background", "blue");
+                    } else {
+                        $("#pwd").css("background", "red");
+                    }
+                    break;
+                case "userName":
+                    const userName = document.getElementById("userName").value;
+                    if (userName.length > 0) {
+                        $("#userName").css("background", "blue");
+                    } else {
+                        $("#userName").css("background", "red");
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+    </script>
+</head>
+<body>
+회원가입
+<br/>
+
+<form th:action="@{/signup}" method="post">
+    ID : <input type="text" id="userId" name="userId" placeholder="영어 20자이내" onchange="checkInfo('userId')">
+    <span th:text="${valid_userId}"></span>
+    <br/><!--email -->
+
+    PW : <input type="password" id="pwd" name="pwd" placeholder="숫자/영어/특수문자 8자 이상" onchange="checkInfo('pwd')">
+    <span th:text="${valid_pwd}"></span>
+    <br/><!--password-->
+
+    이름 : <input type="text" id="userName" name="userName" placeholder="" onchange="checkInfo('userName')">
+    <span th:text="${valid_userName}"></span>
+    <br/>
+
+    <input type="text" name="userType" placeholder="" hidden value="member">
+
+    <button type="submit" onclick="checkInfo()">확인</button>
+</form>
+</body>
+
+</html>

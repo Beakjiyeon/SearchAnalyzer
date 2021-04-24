@@ -1,12 +1,20 @@
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-<title>Ad Analyzer</title>
+    <title>Ad Analyzer</title>
 </head>
 <body>
-Hello!! <br />
+Hello!! <br/>
 This Ad Analyer.
-Today is <em th:text="${date}">empty</em>
+<!--
 <p th:text="${content}">empty</p>
+-->
+<h1>메인 페이지</h1>
+<hr>
+<a sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
+<a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
+<!-- <a sec:authorize="isAnonymous()" th:href="@{/signup}">회원가입</a> -->
+<a sec:authorize="hasRole('ROLE_MEMBER')" th:href="@{/info}">내정보</a>
+<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/users}">어드민</a>
 </body>
-
+<script src="/static/script/use/index.js/script/index.js"></script>
 </html>
