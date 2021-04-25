@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="header">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <div class="float-left" style="color: white">
+                Search Analyzer
+            </div>
+
+            <div class="navbar-nav ml-auto" style="color: white">
+                <a sec:authorize="isAuthenticated()" th:href="@{/logout}" style="margin-right: 2rem">로그아웃</a>
+                by 백지연
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
+</html>

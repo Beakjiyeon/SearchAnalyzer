@@ -1,24 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <base href="/">
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <th:block th:replace="common/header :: header"/>
+    <th:block th:replace="common/nav :: nav"/>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Host</title>
+    <script src="js/use/host.js"></script>
 </head>
 <body>
-host
-
-<form th:action="@{/search/host}" method="post">
-    <input type="text" name="keyword" placeholder="검색할 단어를 입력해주세요.">
-    <button type="submit">검색</button>
-</form>
-
-<div>
-    <span th:each="pageNum : ${pageList}" th:inline="text">
-        <a th:href="@{'/host/?page=' + ${pageNum}}">[[${pageNum}]]</a>
-    </span>
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">호스트 통계</h1>
+    <p class="lead">실시간 검색 페이지에서 검색된 페이지들의 누적 정보입니다. 수집된 검색어 별 호스트명의 누적 검색 수를 볼 수 있습니다.</p>
 </div>
 
-<table>
+<form th:action="@{/search/host}" method="post" style="margin-left: 1%; margin-bottom: 3%;">
+    <label>
+        <input type="text" class="form-control" id="keyword" name="keyword" placeholder="검색할 인자를 입력하여 주십시오 ."
+               style="display: inline-block">
+    </label>
+    <button type="submit" class="btn btn-secondary" style="margin-top: -6px;">검색</button>
+    <div style="display: inline-block; margin: 0 2rem;">
+        검색어 기준 정렬 :
+    </div>
+    <label for="sortAsc">
+        <select class="form-control" id="sortAsc" name="sortAsc" style="display: inline-block;" th:onchange="submit()"
+                th:value="${sortAsc}">
+            <option value="1">오름차순</option>
+            <option value="0">내림차순</option>
+        </select>
+    </label>
+</form>
+
+<table class="table">
     <tr>
         <td>NO.</td>
         <td>검색어</td>
@@ -33,5 +49,12 @@ host
     </tr>
 
 </table>
+<div>
+    <button id="prev" th:value="${prev}" onclick="checkPage('prev')"><</button>
+    <span th:each="pageNum : ${pageList}" th:inline="text">
+            <a th:href="@{'/host/?page=' + ${pageNum}}">[[${pageNum}]]</a>
+        </span>
+    <button id="next" th:value="${next}" onclick="checkPage('next')">></button>
+</div>
 </body>
 </html>

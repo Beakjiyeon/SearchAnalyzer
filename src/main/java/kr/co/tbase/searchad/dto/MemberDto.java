@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
 @ToString
 @NoArgsConstructor
 public class MemberDto {
-    private Long id;
+    private int id;
 
     @Valid
     @NotEmpty(message = "유저 ID는 필수 입력 값입니다.")

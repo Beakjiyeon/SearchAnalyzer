@@ -1,24 +1,34 @@
 <!DOCTYPE html>
-<html lang="kr" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <base href="/">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <th:block th:replace="common/header :: header"/>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>admin</title>
 </head>
 <body>
-admin page
-
-<form th:action="@{/admin/search/member}" method="post">
-    <input type="text" name="userName" placeholder="검색할 이름을 입력해주세요.">
-    <button type="submit">검색</button>
-</form>
-
-<div>
-    <span th:each="pageNum : ${pageList}" th:inline="text">
-        <a th:href="@{'/admin/users/?page=' + ${pageNum}}">[[${pageNum}]]</a>
-    </span>
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">관리자 페이지</h1>
+    <p class="lead">사용자 정보를 볼 수 있는 관리자 페이지입니다 .</p>
 </div>
 
-<table>
+<form th:action="@{/admin/search/member}" method="post" style="margin-left: 1%; margin-bottom: 3%;">
+    <select name="type" id="type" class="form-select"
+            style="  height: calc(1.5em + 0.75rem + 2px);  padding: 0.375rem 0.75rem;">
+        <option value="id" selected>
+            ID
+        </option>
+        <option value="name">
+            이름
+        </option>
+    </select>
+    <input type="text" class="form-control" id="value" name="value" placeholder="검색할 인자를 입력하여 주십시오 ."
+           style="width:30%; display: inline-block">
+    <button type="submit" class="btn btn-secondary" style="margin-top: -6px;">검색</button>
+</form>
+
+<table class="table">
     <tr>
         <td>NO.</td>
         <td>ID</td>
@@ -30,15 +40,19 @@ admin page
         <td th:text="${dto.userId}"></td>
         <td th:text="${dto.userName}"></td>
         <td>
-            <a type="button" th:href="@{'/admin/user/?user-id=' + ${dto.userId}}">삭제</a></td>
+            <a type="button" th:href="@{'/admin/user/delete?user-id=' + ${dto.userId}}">
+                삭제
+            </a>
+        </td>
     </tr>
 
 </table>
+<div>
+    <button id="prev" th:value="${prev}" onclick="checkPage('prev')"><</button>
+    <span th:each="pageNum : ${pageList}" th:inline="text">
+        <a th:href="@{'/admin/users?page=' + ${pageNum}}">[[${pageNum}]]</a>
+    </span>
+    <button id="next" th:value="${next}" onclick="checkPage('next')">></button>
+</div>
 </body>
-
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-<scipt>
-
-</scipt>
 </html>

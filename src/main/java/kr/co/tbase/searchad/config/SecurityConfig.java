@@ -19,7 +19,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private MemberService memberService;
+    private final MemberService memberService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -27,29 +27,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception
-    {
+    public void configure(WebSecurity web) {
         // static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 )
         web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
     }
 
-/*
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin")
-                .password("{noop}1234")
-                .roles("ADMIN");
-    }
-
- */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf()
                 .requireCsrfProtectionMatcher(new AntPathRequestMatcher("!/h2-console/**"))
                 .and()
                 .headers()
-                .addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy","script-src 'self'"))
+                .addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy", "script-src 'self'"))
                 .frameOptions()
                 .disable(); // h2와 spring security
         http.authorizeRequests()
@@ -57,6 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/myinfo").hasRole("MEMBER")
                 .antMatchers("/search/**").hasRole("MEMBER")
+                .antMatchers("/host").hasRole("MEMBER")
+                .antMatchers("/relatedwords").hasRole("MEMBER")
                 .antMatchers("/login").permitAll()
                 .and() // 로그인 설정
                 .formLogin()
@@ -64,12 +55,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.loginProcessingUrl("/api/login")
                 .usernameParameter("userId") // input name과 통일
                 .passwordParameter("pwd")
-                .defaultSuccessUrl("/login/result")
+//                .defaultSuccessUrl("/login/result")
+                .successHandler(new SuccessHandler())
+                .failureHandler(new FailHandler())
                 .permitAll()
                 .and() // 로그아웃 설정
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/logout/result")
+                .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true)
                 .and()
                 .exceptionHandling().accessDeniedPage("/denied");// 403 예외처리 핸들링

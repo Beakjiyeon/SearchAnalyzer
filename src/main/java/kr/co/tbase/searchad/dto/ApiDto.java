@@ -6,7 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ApiDto {
-    int status;
-    //Member data;
-    String message;
+
+    private int result;
+    private Object data;
+    private String message;
+
 }

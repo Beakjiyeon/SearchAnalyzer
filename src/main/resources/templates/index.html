@@ -3,18 +3,17 @@
     <title>Ad Analyzer</title>
 </head>
 <body>
-Hello!! <br/>
-This Ad Analyer.
+
 <!--
 <p th:text="${content}">empty</p>
 -->
-<h1>메인 페이지</h1>
-<hr>
-<a sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
-<a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
-<!-- <a sec:authorize="isAnonymous()" th:href="@{/signup}">회원가입</a> -->
-<a sec:authorize="hasRole('ROLE_MEMBER')" th:href="@{/info}">내정보</a>
-<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/users}">어드민</a>
+<!--<h1>메인 페이지</h1>-->
+<!--<hr>-->
+<!--<a sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>-->
+<!--<a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>-->
+<!--&lt;!&ndash; <a sec:authorize="isAnonymous()" th:href="@{/signup}">회원가입</a> &ndash;&gt;-->
+<!--<a sec:authorize="hasRole('ROLE_MEMBER')" th:href="@{/info}">내정보</a>-->
+<!--<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin/users}">어드민</a>-->
 </body>
-<script src="/static/script/use/index.js/script/index.js"></script>
+<script src="js/use/index.js"></script>
 </html>

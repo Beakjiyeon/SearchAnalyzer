@@ -11,11 +11,11 @@ import lombok.ToString;
 @NoArgsConstructor
 public class RelatedWordDto {
     private String keyword;
-    private String relatedWords;
+    private String relatedwords;
 
-    public RelatedWordDto(String keyword, String relatedWords) {
+    public RelatedWordDto(String keyword, String relatedwords) {
         this.keyword =keyword;
-        this.relatedWords =relatedWords;
+        this.relatedwords =relatedwords;
     }
 
 }

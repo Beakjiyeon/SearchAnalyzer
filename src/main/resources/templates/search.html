@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <base href="/">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <th:block th:replace="common/header :: header"/>
+    <th:block th:replace="common/nav :: nav"/>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">실시간 검색 결과</h1>
+    <p class="lead">구글 검색 엔진으로 부터 얻은 크롤링 결과입니다.</p>
+</div>
 
-<p th:text="${test}"></p>
-<form th:action="@{/search/keyword}" method="post">
-    <input type="text" name="keyword" placeholder="검색할 단어을를 입력해주세요.">
-    <button type="submit">검색</button>
+<form th:action="@{/search/keyword}" method="post" style="margin-left: 1%; margin-bottom: 3%;">
+    <label>
+        <input type="text" class="form-control" id="keyword" name="keyword" placeholder="검색할 인자를 입력하여 주십시오 ."
+               style="display: inline-block">
+    </label>
+    <button type="submit" class="btn btn-secondary" style="margin-top: -6px;">검색</button>
 </form>
 
-<table>
+<table class="table">
     <tr>
         <td>NO.</td>
         <td>URL</td>

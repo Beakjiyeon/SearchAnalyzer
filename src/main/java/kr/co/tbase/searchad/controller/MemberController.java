@@ -1,6 +1,7 @@
 package kr.co.tbase.searchad.controller;
 
 import kr.co.tbase.searchad.dto.MemberDto;
+import kr.co.tbase.searchad.dto.PageDto;
 import kr.co.tbase.searchad.entity.Members;
 import kr.co.tbase.searchad.service.MemberService;
 import lombok.AllArgsConstructor;
@@ -9,29 +10,30 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 @AllArgsConstructor
 public class MemberController {
-    private MemberService memberService;
+    private final MemberService memberService;
 
     // 메인 페이지
-    @GetMapping("/")
-    public String index() {
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String pageIndex() {
         return "index";
     }
 
     // 회원가입 페이지
-    @GetMapping("/join")
-    public String dispSignup() {
+    @RequestMapping(value = "/join", method = RequestMethod.GET)
+    public String pageJoin() {
         return "join";
     }
 
     // 회원가입 처리
-    @PostMapping("/signup")
-    public String execSignup(MemberDto memberDto, Errors errors, Model model) {
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String registering(@Valid MemberDto memberDto, Errors errors, Model model) {
         if (errors.hasErrors()) {
             // 회원가입 실패시, 입력 데이터를 유지
             model.addAttribute("userDto", memberDto);
@@ -46,84 +48,71 @@ public class MemberController {
         return "redirect:/login";
     }
 
+
     // 로그인 페이지
-    @GetMapping("/login")
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String dispLogin() {
-        return "login.html";
-    }
-
-    // 로그인 결과 페이지
-    @GetMapping("/login/result")
-    public String dispLoginResult() {
-        return "loginSuccess.html";
-    }
-
-    // 로그아웃 결과 페이지
-    @GetMapping("/logout/result")
-    public String dispLogout() {
-        return "logout.html";
+        return "login";
     }
 
     // 접근 거부 페이지
-    @GetMapping("/denied")
+    @RequestMapping(value = "/denied", method = RequestMethod.GET)
     public String dispDenied() {
-        return "denied.html";
+        return "denied";
     }
 
     // 내 정보 페이지
-    @GetMapping("/info")
+    @RequestMapping(value = "/myInfo", method = RequestMethod.GET)
     public String dispMyInfo() {
-        return "myinfo.html";
+        return "myInfo";
     }
 
     // 어드민 페이지
-    @GetMapping("/admin/users")
-    public String dispAdmin(Model models,
-                            @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
-
+    @RequestMapping(value = "/admin/users", method = RequestMethod.GET)
+    public String dispAdmin(Model models, @RequestParam(value = "page", defaultValue = "1") Integer pageNum) {
 
         List<Members> data = memberService.getMemberList(pageNum);
-        Integer[] pageList = memberService.getPageList(pageNum, "user");
+        PageDto pageDto = memberService.getPageList(pageNum, "user");
 
-        //models.addAttribute("boardList", boardList);
-        models.addAttribute("pageList", pageList);
+        models.addAttribute("prev", pageDto.getPrev());
+        models.addAttribute("next", pageDto.getNext());
+        models.addAttribute("pageList", pageDto.getPageList());
 
         models.addAttribute("data", data);
-        models.addAttribute("start", (pageNum-1) * 10 + 1);
-        return "admin.html";
+        models.addAttribute("start", (pageNum - 1) * 10 + 1);
+
+        return "admin";
     }
 
     // 어드민 페이지 삭제
-    @RequestMapping(value = "/admin/user")
-    public String removeMember(Model models,
-                               @RequestParam(value="user-id") String userId) {
-        System.out.println("======================"+userId);
-        if(userId != null){
+    @RequestMapping(value = "/admin/user/delete", method = RequestMethod.GET)
+    public String removeMember(Model models, @RequestParam(value = "user-id") String userId) {
+        if (userId != null) {
             boolean result = memberService.removeMemberByUserId(userId);
-
-            /*
-            if(result == false){
-                return "error.html";
-            }
-
-             */
         }
         List<Members> data = memberService.getMemberList(1);
-        Integer[] pageList = memberService.getPageList(1, "user");
-        models.addAttribute("pageList", pageList);
+        PageDto pageDto = memberService.getPageList(1, "user");
+        models.addAttribute("prev", pageDto.getPrev());
+        models.addAttribute("next", pageDto.getNext());
+
+        models.addAttribute("pageList", pageDto.getPageList());
         models.addAttribute("start", 1);
         models.addAttribute("data", data);
-        return "admin.html";
+
+        return "admin";
     }
 
     // 어드민 페이지 검색
     @RequestMapping(value = "/admin/search/member", method = RequestMethod.POST)
-    public String filterMemberList(String userName, Model models) {
-        Integer[] pageList = memberService.getPageList(1 ,"user");
-        models.addAttribute("pageList", pageList);
+    public String filterMemberList(String type, String value, Model models) {
+        PageDto pageDto = memberService.getPageList(1, "user");
+        models.addAttribute("pageList", pageDto.getPageList());
+        models.addAttribute("prev", pageDto.getPrev());
+        models.addAttribute("next", pageDto.getNext());
         models.addAttribute("start", 1);
-        models.addAttribute("data", memberService.findNameLike(userName));
-        return "admin.html";
+        models.addAttribute("data", memberService.findByType(type, value));
+
+        return "admin";
     }
 
 

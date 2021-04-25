@@ -31,6 +31,8 @@ dependencies {
 
 	// 크롤링
 	implementation group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
+	implementation files('libs/kkma-2.1.jar')
+
 
 	runtimeOnly group: 'com.h2database', name: 'h2'
 	testRuntimeOnly group: 'com.h2database', name: 'h2'

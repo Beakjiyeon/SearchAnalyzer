@@ -1,0 +1,47 @@
+// 비밀 번호 인자 중복 검사 로직
+function noDuple(str) {
+    let strArray = [];
+    for (let i = 0; i < str.length; i++) {
+        strArray.push(str.charAt(i));
+    }
+    const strSetArray = Array.from(new Set(strArray));
+    return JSON.stringify(strArray) === JSON.stringify(strSetArray);
+}
+
+// 유효성 검사
+function checkInfo() {
+    const idMatch = /^[a-zA-Z]{1,10}$/; // 아이디 유효성 검사
+    const pwdMatch = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/; // 비밀번호 유효성 검사
+
+    const userId = document.getElementById("userId").value;
+    const pwd = document.getElementById("pwd").value;
+
+    const infoList = [userId, pwd];
+
+    // 비어 있는 값 검사 (userName 빈값 방지)
+    for (let info in infoList) {
+        if (info === "") {
+            alert("비어 있는 값이 있습니다 .");
+            return false;
+        }
+    }
+
+    if (!idMatch.test(userId)) { // ID 유효성 검사
+        alert("ID 형식에 맞게 입력해 주십시오 .");
+        $("#userId").val("").focus();
+        return false;
+    } else if (!pwdMatch.test(pwd) || !noDuple(pwd)) { // 비밀 번호 유효성 검사
+        alert("비밀 번호 형식 맞게 입력해 주십시오 .");
+        $("#pwd").val("").focus();
+        return false;
+    }
+
+    return true;
+}
+
+function login() {
+    if (checkInfo()) {
+        $('form').attr('action', '/login').attr('method',
+            'post').submit();
+    }
+}

@@ -14,6 +14,7 @@ public interface MemberRepository extends JpaRepository<Members, Long> {
     Page<Members> findAllByUserType(String userType, Pageable pageable);
 
     Optional<List<Members>> findByUserNameContaining(String userName);
+    Optional<List<Members>> findByUserIdContaining(String userId);
     Optional<List<Members>> findByUserNameLike(String userName);
 
     String deleteByUserId(String userId);

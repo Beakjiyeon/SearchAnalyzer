@@ -17,12 +17,12 @@ public class Contents {
     @Column(name = "keyword", length = 256, nullable = false)
     private String keyword;
 
-    @Column(name = "relatedWords", length = 2048)
-    private String relatedWords;
+    @Column(name = "relatedwords", length = 2048)
+    private String relatedwords;
 
     @Builder
-    public Contents(String keyword, String relatedWords) {
+    public Contents(String keyword, String relatedwords) {
         this.keyword = keyword;
-        this.relatedWords = relatedWords;
+        this.relatedwords = relatedwords;
     }
 }

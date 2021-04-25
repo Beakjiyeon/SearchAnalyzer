@@ -1,88 +1,77 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <script
-            src="https://code.jquery.com/jquery-3.4.1.min.js"
-            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-            crossorigin="anonymous"></script>
-    <script src="/static/script/jquery-3.6.0.min.js"></script>
+    <base href="/">
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/use/join.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <th:block th:replace="common/header :: header"/>
     <meta charset="UTF-8">
-    <title>회원가입 페이지</title>
-    <script>
-        const engMatch = /^[a-zA-Z]{1,10}$/;
-        const pwdMatch = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-
-        function noDuple(str) {
-            let strArray = [];
-            for (let i = 0; i < str.length; i++) {
-                strArray.push(str.charAt(i));
-            }
-            const strSetArray = Array.from(new Set(strArray));
-            console.log(strArray);
-            console.log(strSetArray);
-            return strArray === strSetArray;
-        }
-
-        function checkInfo(type) {
-            switch (type) {
-                case "userId":
-                    const userId = document.getElementById("userId").value;
-                    if (engMatch.test(userId)) {
-                        $("#userId").css("background", "blue");
-                    } else {
-                        $("#userId").css("background", "red");
-                    }
-                    break;
-                case "pwd":
-                    const pwd = document.getElementById("pwd").value;
-                    const pwdDupleMatch = pwd.replace(/(.)\1+/g, '$1');
-                    console.log(pwd)
-                    console.log(pwdDupleMatch)
-                    if (pwdMatch.test(pwd) && noDuple(pwd)) {
-                        console.log(pwdMatch.test(pwd));
-                        console.log(noDuple(pwd))
-                        $("#pwd").css("background", "blue");
-                    } else {
-                        $("#pwd").css("background", "red");
-                    }
-                    break;
-                case "userName":
-                    const userName = document.getElementById("userName").value;
-                    if (userName.length > 0) {
-                        $("#userName").css("background", "blue");
-                    } else {
-                        $("#userName").css("background", "red");
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-
-    </script>
+    <title>회원 가입 페이지</title>
 </head>
 <body>
-회원가입
-<br/>
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">회원 가입</h1>
+    <p class="lead">회원 가입을 완료해 주십시오 .</p>
+</div>
+<div class="container">
+    <header include-html="templates/common/header"></header>
+    <div class="container-fluid" style="margin-top: 80px;">
+        <form action="#" method="post" class="was-validated">
+            <div class="form-group">
+                <label for="userId"><span style="color: red; ">*</span>ID:
+                    (영어로만 10자 이하)
+                    <input type="text" id="userId" class="form-control" placeholder="Enter user ID" name="userId"
+                           required>
+                </label>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
 
-<form th:action="@{/signup}" method="post">
-    ID : <input type="text" id="userId" name="userId" placeholder="영어 20자이내" onchange="checkInfo('userId')">
-    <span th:text="${valid_userId}"></span>
-    <br/><!--email -->
+            <div class="form-group">
+                <label for="pwd"><span style="color: red; ">*</span>
+                    Password: (영어 and 숫자 and 특수 문자 필수 입력 8글자 이상 중복 불가)
+                    <input type="password" id="pwd" class="form-control" placeholder="Enter password" name="pwd"
+                           required>
+                </label>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
 
-    PW : <input type="password" id="pwd" name="pwd" placeholder="숫자/영어/특수문자 8자 이상" onchange="checkInfo('pwd')">
-    <span th:text="${valid_pwd}"></span>
-    <br/><!--password-->
+            <div class="form-group">
+                <label for="pwd2"><span style="color: red; ">*</span>
+                    Password Confirm (비밀번호 확인)
+                    <input type="password" id="pwd2" class="form-control" placeholder="Enter password" name="pwd2"
+                           required>
+                </label>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
 
-    이름 : <input type="text" id="userName" name="userName" placeholder="" onchange="checkInfo('userName')">
-    <span th:text="${valid_userName}"></span>
-    <br/>
+            <div class="form-group">
+                <label for="userName"><span style="color: red; ">*</span>
+                    Name: <input type="text" id="userName" class="form-control" placeholder="Enter user Name"
+                                 name="userName" required>
+                </label>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
 
-    <input type="text" name="userType" placeholder="" hidden value="member">
+            <label>
+                <input type="text" name="userType" placeholder="" hidden value="member">
+            </label>
 
-    <button type="submit" onclick="checkInfo()">확인</button>
-</form>
+            <p>
+                <input type="button" class="btn btn-success" onclick="register()" value="Create Account">
+            </p>
+
+            <p>
+                <a href="/login">back to Login</a>
+            </p>
+
+        </form>
+    </div>
+</div>
 </body>
 
 </html>

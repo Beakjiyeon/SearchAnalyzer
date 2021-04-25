@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class Members {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(length = 20, nullable = false)
     private String userId;
@@ -28,7 +28,7 @@ public class Members {
     private String userType;
 
     @Builder
-    public Members(Long id, String userId, String pwd, String userName, String userType) {
+    public Members(int id, String userId, String pwd, String userName, String userType) {
         this.id = id;
         this.userId = userId;
         this.pwd = pwd;

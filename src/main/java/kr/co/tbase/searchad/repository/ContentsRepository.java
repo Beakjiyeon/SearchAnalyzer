@@ -20,8 +20,8 @@ public interface ContentsRepository extends JpaRepository<Contents, Long> {
     Optional<List<Contents>> findByKeyword(String keyword);
 
     @Modifying
-    @Query(value = "UPDATE content c set c.related_words = :relatedWords where c.keyword = :keyword", nativeQuery = true)
-    void changeRelatedWords(String keyword, String relatedWords);
+    @Query(value = "UPDATE content c set c.relatedwords = :relatedwords where c.keyword = :keyword", nativeQuery = true)
+    void changeRelatedWords(String keyword, String relatedwords);
 
     Page<Contents> findByKeywordLike(String keyword, Pageable pageable);
 }
