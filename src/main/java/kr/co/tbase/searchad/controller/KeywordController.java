@@ -59,7 +59,7 @@ public class KeywordController {
 
     // 호스트 검색어
     @RequestMapping(value = "/search/host", method = RequestMethod.POST)
-    public Model filterHostList(String keyword, int sortAsc, Model models) {
+    public String filterHostList(String keyword, int sortAsc, Model models) {
 
         if (keyword.equals("")) {
             keyword = null;
@@ -73,7 +73,7 @@ public class KeywordController {
         models.addAttribute("data", keywordService.getHostList(keyword, 1, sortAsc));
         models.addAttribute("sortAsc", sortAsc);
 
-        return models;
+        return "host";
     }
 
     // 연관 검색어
